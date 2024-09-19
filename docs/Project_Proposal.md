@@ -39,12 +39,18 @@
 # 3. Data
   Describe the datasets you are using to answer your research questions.
 
-  Data sources
+  Data sources:
+  
   The dataset is sourced from Amazon, and contains customer reviews for various products.
+  
   Data size: 301 MB
+  
   Data shape: 567,092 rows and 10 columns
+  
   Time-period: The dataset does not specify a time range, but the reviews span multiple years based on product release dates.
+  
   What does each row represent?
+  
   Each row represents an individual product review submitted by a customer.
   
   Data dictionary:

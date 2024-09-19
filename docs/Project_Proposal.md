@@ -1,20 +1,24 @@
-1. Title and Author
-Project Title: **Sentiment Analysis and Quality Metrics in Amazon Product Reviews**
-Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
-Author Name: Yeshwanth Rayankula
-Link to the author's GitHub repo of the project: https://github.com/yeshwanthrayankula11/UMBC-DATA606-Capstone/tree/main
-Link to the author's LinkedIn profile: https://www.linkedin.com/in/yeshwanth-rayankula-3b798a17a/
+# 1. Title and Author
+   # Project Title: **Sentiment Analysis and Quality Metrics in Amazon Product Reviews**
+
+   Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
+ 
+   Author Name: Yeshwanth Rayankula
+ 
+   Link to the author's GitHub repo of the project: https://github.com/yeshwanthrayankula11/UMBC-DATA606-Capstone/tree/main
+ 
+   Link to the author's LinkedIn profile: https://www.linkedin.com/in/yeshwanth-rayankula-3b798a17a/
 
 
-2. Project Background
+# 2.  Project Background
 
-  What is it about?
-  - This project aims to analyze Amazon product reviews to understand customer sentiment, extract insights, and identify key entities using traditional machine learning techniques and deep learning models, including BERT.
+  -   What is it about?
+  -   This project aims to analyze Amazon product reviews to understand customer sentiment, extract insights, and identify key entities using traditional machine learning techniques and deep learning models, including BERT.
 
-  Why does it matter?
-  - Understanding customer sentiment is crucial for businesses to improve product quality and customer satisfaction. Analyzing reviews provides insights into customer preferences and areas for improvement, ultimately boosting sales and fostering brand loyalty.
+  -   Why does it matter?
+  -   Understanding customer sentiment is crucial for businesses to improve product quality and customer satisfaction. Analyzing reviews provides insights into customer preferences and areas for improvement, ultimately boosting sales and fostering brand loyalty.
 
-  What are your research questions?
+  -   What are your research questions?
 
   - What are the common sentiments expressed in Amazon product reviews?
   - How can we use machine learning models to predict product ratings based on review text?
@@ -32,7 +36,7 @@ Link to the author's LinkedIn profile: https://www.linkedin.com/in/yeshwanth-ray
 
 
 
-3. Data
+# 3. Data
   Describe the datasets you are using to answer your research questions.
 
   Data sources

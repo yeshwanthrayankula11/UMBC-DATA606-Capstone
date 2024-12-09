@@ -13,6 +13,7 @@ MODEL_FILE_ID = "1Pv4pMPucrf40YgTu06NFpVZr1LxnGjyS"  # Google Drive ID for safet
 
 # Download the model file if not present
 def download_model():
+    """Download the safetensors model file from Google Drive if not already present."""
     if not os.path.exists(MODEL_FILE):
         st.info("Downloading model file from Google Drive...")
         os.makedirs(MODEL_PATH, exist_ok=True)
@@ -21,6 +22,7 @@ def download_model():
 # Load the tokenizer and model
 @st.cache_resource
 def load_model_and_tokenizer():
+    """Load the tokenizer and model, downloading files as needed."""
     try:
         # Ensure model file is downloaded
         download_model()
@@ -29,10 +31,13 @@ def load_model_and_tokenizer():
         tokenizer = DistilBertTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
 
         # Load model using safetensors loader
-        state_dict = load_file(MODEL_FILE)
-        model = DistilBertForSequenceClassification.from_pretrained(MODEL_PATH, state_dict=state_dict)
+        state_dict = load_file(MODEL_FILE)  # Load state_dict from safetensors
+        model = DistilBertForSequenceClassification.from_pretrained(
+            MODEL_PATH,
+            state_dict=state_dict,  # Pass the state_dict to the model
+            local_files_only=True,
+        )
         model.eval()
-
         return tokenizer, model
     except Exception as e:
         st.error(f"Error loading model or tokenizer: {e}")
@@ -40,6 +45,7 @@ def load_model_and_tokenizer():
 
 # Predict sentiment
 def predict_sentiment(review, tokenizer, model):
+    """Predict the sentiment of a single review."""
     tokens = tokenizer.encode_plus(
         review,
         max_length=512,

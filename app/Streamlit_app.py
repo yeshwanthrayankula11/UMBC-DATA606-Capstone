@@ -1,59 +1,55 @@
-
+import streamlit as st
+import gdown
 import os
-import pandas as pd
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
-import streamlit as st
 
-# Load pre-trained BERT model and tokenizer
-def load_model(model_dir):
-    model = BertForSequenceClassification.from_pretrained(model_dir)
-    tokenizer = BertTokenizer.from_pretrained(model_dir)
-    return model, tokenizer
+# Function to download files from Google Drive
+def download_file_from_google_drive(file_id, output_file):
+    url = f"https://drive.google.com/uc?id={file_id}"
+    gdown.download(url, output_file, quiet=False)
 
-# Predict sentiment for user input
-def predict_sentiment(model, tokenizer, text):
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512)
-    outputs = model(**inputs)
-    predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
-    sentiment = torch.argmax(predictions, dim=1).item()
-    labels = {0: "Negative", 1: "Neutral", 2: "Positive"}
-    return labels[sentiment]
+# Google Drive file IDs
+model_file_id = "1Pv4pMPucrf40YgTu06NFpVZr1LxnGjyS"  
+tokenizer_file_id = "1KM7-jZAtlif-tBoj6bSkbSkHdcsZdZog"  
 
-# Load Dataset and Display Stats
-def load_and_display_stats(dataset_path):
-    data = pd.read_csv(dataset_path)
-    st.write("Dataset loaded successfully.")
-    st.write("Class Distribution:")
-    st.write(data['Sentiment'].value_counts())
-    return data
+# Check and download the model
+if not os.path.exists("bert_model.pt"):
+    download_file_from_google_drive(model_file_id, "bert_model.pt")
 
-# Streamlit app interface
-def main():
-    st.title("Sentiment Analysis App")
-    st.write("Analyze the sentiment of your reviews using a fine-tuned BERT model.")
+# Check and download the tokenizer
+if not os.path.exists("tokenizer"):
+    os.makedirs("tokenizer", exist_ok=True)
+    download_file_from_google_drive(tokenizer_file_id, "tokenizer/tokenizer.zip")
+    os.system("unzip tokenizer/tokenizer.zip -d tokenizer")
 
-    # Directory and file paths
-    model_dir = os.path.join("app", "bert_model_folder")
-    dataset_path = os.path.join("app", "updated_dataset", "cleaned_dataset.csv")
+# Load the model and tokenizer
+model = BertForSequenceClassification.from_pretrained("bert_model.pt")
+tokenizer = BertTokenizer.from_pretrained("tokenizer")
 
-    # Load model and tokenizer
-    st.write("Loading model...")
-    model, tokenizer = load_model(model_dir)
-    st.write("Model loaded successfully.")
+# Streamlit app UI
+st.title("Sentiment Analysis App")
+st.subheader("I can classify your review into Positive, Neutral, or Negative.")
 
-    # Display dataset statistics
-    if st.checkbox("Show Dataset Stats"):
-        load_and_display_stats(dataset_path)
+# Input from user
+user_input = st.text_area("Enter a review:")
 
-    # User input for sentiment prediction
-    user_input = st.text_area("Enter your review:", "")
-    if st.button("Predict Sentiment"):
-        if user_input.strip():
-            sentiment = predict_sentiment(model, tokenizer, user_input)
-            st.write(f"Predicted Sentiment: {sentiment}")
-        else:
-            st.write("Please enter a review to predict its sentiment.")
+# Predict sentiment
+if st.button("Classify"):
+    if user_input.strip():
+        # Tokenize and predict
+        inputs = tokenizer(user_input, return_tensors="pt", truncation=True, padding=True, max_length=512)
+        outputs = model(**inputs)
+        predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
+        sentiment_index = torch.argmax(predictions, dim=1).item()
+        confidence = predictions[0][sentiment_index].item()
 
-if __name__ == "__main__":
-    main()
+        # Map sentiment index to label
+        sentiment_labels = {0: "Negative", 1: "Neutral", 2: "Positive"}
+        sentiment = sentiment_labels[sentiment_index]
+
+        # Display results
+        st.write(f"**Sentiment:** {sentiment}")
+        st.write(f"**Confidence Level:** {confidence * 100:.2f}%")
+    else:
+        st.write("Please enter some text to classify.")

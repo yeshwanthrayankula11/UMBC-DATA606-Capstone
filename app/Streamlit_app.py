@@ -1,55 +1,94 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 import streamlit as st
-import gdown
-import os
+import pandas as pd
 import torch
-from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+import os
 
-# Function to download files from Google Drive
-def download_file_from_google_drive(file_id, output_file):
-    url = f"https://drive.google.com/uc?id={file_id}"
-    gdown.download(url, output_file, quiet=False)
+# Path to your local fine-tuned model
+MODEL_PATH = os.path.abspath("./Bert_Model")
 
-# Google Drive file IDs
-model_file_id = "1Pv4pMPucrf40YgTu06NFpVZr1LxnGjyS"  
-tokenizer_file_id = "1KM7-jZAtlif-tBoj6bSkbSkHdcsZdZog"  
-
-# Check and download the model
-if not os.path.exists("bert_model.pt"):
-    download_file_from_google_drive(model_file_id, "bert_model.pt")
-
-# Check and download the tokenizer
-if not os.path.exists("tokenizer"):
-    os.makedirs("tokenizer", exist_ok=True)
-    download_file_from_google_drive(tokenizer_file_id, "tokenizer/tokenizer.zip")
-    os.system("unzip tokenizer/tokenizer.zip -d tokenizer")
-
-# Load the model and tokenizer
-model = BertForSequenceClassification.from_pretrained("bert_model.pt")
-tokenizer = BertTokenizer.from_pretrained("tokenizer")
-
-# Streamlit app UI
-st.title("Sentiment Analysis App")
-st.subheader("I can classify your review into Positive, Neutral, or Negative.")
-
-# Input from user
-user_input = st.text_area("Enter a review:")
+# Load the tokenizer and model
+@st.cache_resource
+def load_model_and_tokenizer():
+    try:
+        tokenizer = DistilBertTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
+        model = DistilBertForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True)
+        model.eval()
+        return tokenizer, model
+    except Exception as e:
+        st.error(f"Error loading model or tokenizer: {e}")
+        raise e
 
 # Predict sentiment
-if st.button("Classify"):
+def predict_sentiment(review, tokenizer, model):
+    tokens = tokenizer.encode_plus(
+        review,
+        max_length=512,
+        truncation=True,
+        padding="max_length",
+        add_special_tokens=True,
+        return_tensors="pt"
+    )
+    input_ids = tokens["input_ids"]
+    attention_mask = tokens["attention_mask"]
+
+    with torch.no_grad():
+        outputs = model(input_ids, attention_mask=attention_mask)
+        logits = outputs.logits
+        predicted_class = torch.argmax(logits, dim=1).item()
+
+    sentiment_map = {0: "Negative", 1: "Neutral", 2: "Positive"}
+    return sentiment_map[predicted_class]
+
+# Streamlit App
+st.title("Sentiment Analysis App")
+st.write("Analyze the sentiment of text reviews and generate predictions for a dataset.")
+
+# Load the model and tokenizer
+tokenizer, model = load_model_and_tokenizer()
+
+# Single review sentiment analysis
+st.header("Input a Review for Sentiment Analysis")
+user_input = st.text_area("Enter a review:", height=150)
+
+if st.button("Analyze Sentiment"):
     if user_input.strip():
-        # Tokenize and predict
-        inputs = tokenizer(user_input, return_tensors="pt", truncation=True, padding=True, max_length=512)
-        outputs = model(**inputs)
-        predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
-        sentiment_index = torch.argmax(predictions, dim=1).item()
-        confidence = predictions[0][sentiment_index].item()
-
-        # Map sentiment index to label
-        sentiment_labels = {0: "Negative", 1: "Neutral", 2: "Positive"}
-        sentiment = sentiment_labels[sentiment_index]
-
-        # Display results
-        st.write(f"**Sentiment:** {sentiment}")
-        st.write(f"**Confidence Level:** {confidence * 100:.2f}%")
+        sentiment = predict_sentiment(user_input, tokenizer, model)
+        st.success(f"The predicted sentiment is: **{sentiment}**")
     else:
-        st.write("Please enter some text to classify.")
+        st.warning("Please enter a valid review text.")
+
+# Dataset upload and sentiment prediction
+st.sidebar.title("Classify Uploaded Dataset")
+uploaded_file = st.sidebar.file_uploader("Upload CSV", type="csv")
+
+if uploaded_file is not None:
+    data = pd.read_csv(uploaded_file)
+    st.write("Uploaded Dataset Preview:")
+    st.write(data.head())
+
+    # Check for the required text column
+    if 'Cleaned_Text' in data.columns:
+        # Apply sentiment prediction to each review in the Cleaned_Text column
+        st.write("Generating sentiment predictions...")
+        data['PredictedSentiment'] = data['Cleaned_Text'].apply(lambda x: predict_sentiment(x, tokenizer, model))
+        st.write("Processed Dataset with Sentiments:")
+        st.dataframe(data)
+
+        # Allow downloading the updated dataset
+        st.download_button("Download Results", data.to_csv(index=False), "results.csv")
+    else:
+        st.error("The uploaded dataset must contain a 'Cleaned_Text' column.")
+
+
+# In[ ]:
+
+
+
+

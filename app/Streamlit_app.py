@@ -1,24 +1,14 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import streamlit as st
 import pandas as pd
 import torch
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
-import os
-
-# Path to your local fine-tuned model
-MODEL_PATH = os.path.abspath("./Bert_Model")
 
 # Load the tokenizer and model
 @st.cache_resource
 def load_model_and_tokenizer():
     try:
-        tokenizer = DistilBertTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
-        model = DistilBertForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True)
+        tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+        model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased")
         model.eval()
         return tokenizer, model
     except Exception as e:
@@ -54,7 +44,7 @@ st.write("Analyze the sentiment of text reviews and generate predictions for a d
 tokenizer, model = load_model_and_tokenizer()
 
 # Single review sentiment analysis
-st.header("Input a Review for Sentiment Analysis")
+st.header("Single Review Analysis")
 user_input = st.text_area("Enter a review:", height=150)
 
 if st.button("Analyze Sentiment"):
@@ -65,30 +55,31 @@ if st.button("Analyze Sentiment"):
         st.warning("Please enter a valid review text.")
 
 # Dataset upload and sentiment prediction
-st.sidebar.title("Classify Uploaded Dataset")
-uploaded_file = st.sidebar.file_uploader("Upload CSV", type="csv")
+st.header("Upload Dataset for Sentiment Analysis")
+uploaded_file = st.file_uploader("Upload CSV", type="csv")
 
 if uploaded_file is not None:
-    data = pd.read_csv(uploaded_file)
-    st.write("Uploaded Dataset Preview:")
-    st.write(data.head())
+    try:
+        data = pd.read_csv(uploaded_file)
+        st.write("Uploaded Dataset Preview:")
+        st.write(data.head())
 
-    # Check for the required text column
-    if 'Cleaned_Text' in data.columns:
-        # Apply sentiment prediction to each review in the Cleaned_Text column
-        st.write("Generating sentiment predictions...")
-        data['PredictedSentiment'] = data['Cleaned_Text'].apply(lambda x: predict_sentiment(x, tokenizer, model))
-        st.write("Processed Dataset with Sentiments:")
-        st.dataframe(data)
+        # Check for the required text column
+        if 'Cleaned_Text' in data.columns:
+            st.write("Generating sentiment predictions...")
+            data['PredictedSentiment'] = data['Cleaned_Text'].apply(lambda x: predict_sentiment(x, tokenizer, model))
+            st.write("Processed Dataset with Sentiments:")
+            st.dataframe(data)
 
-        # Allow downloading the updated dataset
-        st.download_button("Download Results", data.to_csv(index=False), "results.csv")
-    else:
-        st.error("The uploaded dataset must contain a 'Cleaned_Text' column.")
-
-
-# In[ ]:
-
-
-
-
+            # Allow downloading the updated dataset
+            csv_data = data.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="Download Results",
+                data=csv_data,
+                file_name="results.csv",
+                mime="text/csv",
+            )
+        else:
+            st.error("The uploaded dataset must contain a 'Cleaned_Text' column.")
+    except Exception as e:
+        st.error(f"Error processing the file: {e}")

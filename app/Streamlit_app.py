@@ -1,26 +1,38 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-
 import streamlit as st
 import pandas as pd
 import torch
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import os
+import gdown
+from safetensors.torch import load_file  # Import for handling .safetensors
 
-# Path to your local fine-tuned model
+# Define constants
 MODEL_PATH = os.path.abspath("./Bert_Model")
+MODEL_FILE = os.path.join(MODEL_PATH, "model.safetensors")
+MODEL_FILE_ID = "1Pv4pMPucrf40YgTu06NFpVZr1LxnGjyS"  # Google Drive ID for safetensors model file
+
+# Download the model file if not present
+def download_model():
+    if not os.path.exists(MODEL_FILE):
+        st.info("Downloading model file from Google Drive...")
+        os.makedirs(MODEL_PATH, exist_ok=True)
+        gdown.download(f"https://drive.google.com/uc?id={MODEL_FILE_ID}", MODEL_FILE, quiet=False)
 
 # Load the tokenizer and model
 @st.cache_resource
 def load_model_and_tokenizer():
     try:
+        # Ensure model file is downloaded
+        download_model()
+
+        # Load tokenizer
         tokenizer = DistilBertTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
-        model = DistilBertForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True)
+
+        # Load model using safetensors loader
+        state_dict = load_file(MODEL_FILE)
+        model = DistilBertForSequenceClassification.from_pretrained(MODEL_PATH, state_dict=state_dict)
         model.eval()
+
         return tokenizer, model
     except Exception as e:
         st.error(f"Error loading model or tokenizer: {e}")
@@ -86,10 +98,3 @@ if uploaded_file is not None:
         st.download_button("Download Results", data.to_csv(index=False), "results.csv")
     else:
         st.error("The uploaded dataset must contain a 'Cleaned_Text' column.")
-
-
-# In[ ]:
-
-
-
-

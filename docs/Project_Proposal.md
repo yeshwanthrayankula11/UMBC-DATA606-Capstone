@@ -1,6 +1,24 @@
 # 1. Title and Author
    # Project Title: **Sentiment Analysis and Quality Metrics in Amazon Product Reviews**
+   - ![image](https://github.com/user-attachments/assets/b7f0a93f-102b-4b28-be10-c09db2d44bce)
 
+
+   - Author Name: Rayankula Yeshwanth
+   - Semester: FALL 2024
+   - Prepared for: UMBC Data Science Master Degree Capstone by Dr. Chaojie Wang
+   - GitHub Repository: 
+   - LinkedIn Profile: [Checkout my linkedIn Profile](https://www.linkedin.com/in/yeshwanth-rayankula-3b798a17a/)
+   - PowerPoint Presentation: 
+   - Streamlit App: [Visit the Sentiment Analysis App](https://umbc-data606-capstone-8zcuwcpdfrkqq8j5653hmw.streamlit.app/)
+   - YouTube Video: 
+   
+   
+   
+   
+
+   
+   
+   
    Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
  
    Author Name: Yeshwanth Rayankula
@@ -123,7 +141,7 @@
 
 ### Saved the cleaned Dataset for easy access and further modeling and analysis.
 
-# Modeling:
+# 6 Modeling:
 
 ## Traditional ML Models:
 
@@ -148,7 +166,15 @@ Random Forest:
 
 
 
-# So far the BERT model has been the best performaing model compared to the rest of the models.
+### So far, the BERT model has been the best performaing model compared to the rest of the models.
+### So, I chose this to move forward for my application.
+- To do so, I saved the model and uploaded it to a google drive folder which can be openly accessible to anyone with the link.
+- Also, the dataset size is around 100 mb. So, for easy access and due to the size limitations of github(25mb), I uploaded it to my google drive folder and downloaded the dataset dynamically similar to the bert model..
+- Bert_Model: https://drive.google.com/drive/folders/1EBY6HEPcaskIhYsQA00yP9aZL8Zdzly4?usp=drive_link.
+- Dataset: https://drive.google.com/file/d/1tqkp-LpDAgVDFlfdzgCJ5eYJjpkACr2W/view?usp=drive_link.
+
+# 7 Topic Modelling and Aspect Based Analysis.
+
 
 
 

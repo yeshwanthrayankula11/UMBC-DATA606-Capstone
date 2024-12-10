@@ -7,3 +7,4 @@ matplotlib
 gdown
 setuptools>=65.5.0
 pip>=24.3.1
+seaborn

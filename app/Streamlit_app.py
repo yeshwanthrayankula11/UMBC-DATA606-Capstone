@@ -7,7 +7,7 @@ import gdown
 from safetensors.torch import load_file  # Import for handling .safetensors
 
 # Define constants
-MODEL_PATH = os.path.abspath("./Bert_Model")
+MODEL_PATH = os.path.abspath("https://github.com/yeshwanthrayankula11/UMBC-DATA606-Capstone/tree/main/app/Bert_model")
 MODEL_FILE = os.path.join(MODEL_PATH, "model.safetensors")
 MODEL_FILE_ID = "1Pv4pMPucrf40YgTu06NFpVZr1LxnGjyS"  # Google Drive ID for safetensors model file
 

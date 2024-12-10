@@ -2,11 +2,10 @@
    # Project Title: **Sentiment Analysis and Quality Metrics in Amazon Product Reviews**
    - ![image](https://github.com/user-attachments/assets/b7f0a93f-102b-4b28-be10-c09db2d44bce)
 
-
    - Author Name: Rayankula Yeshwanth
    - Semester: FALL 2024
    - Prepared for: UMBC Data Science Master Degree Capstone by Dr. Chaojie Wang
-   - GitHub Repository: 
+   - GitHub Repository: [Checkout my Github Repo](https://github.com/yeshwanthrayankula11/UMBC-DATA606-Capstone)
    - LinkedIn Profile: [Checkout my linkedIn Profile](https://www.linkedin.com/in/yeshwanth-rayankula-3b798a17a/)
    - PowerPoint Presentation: 
    - Streamlit App: [Visit the Sentiment Analysis App](https://umbc-data606-capstone-8zcuwcpdfrkqq8j5653hmw.streamlit.app/)

@@ -11,22 +11,6 @@
    - Streamlit App: [Visit the Sentiment Analysis App](https://umbc-data606-capstone-8zcuwcpdfrkqq8j5653hmw.streamlit.app/)
    - YouTube Video: 
    
-   
-   
-   
-
-   
-   
-   
-   Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
- 
-   Author Name: Yeshwanth Rayankula
- 
-   Link to the author's GitHub repo of the project: https://github.com/yeshwanthrayankula11/UMBC-DATA606-Capstone/tree/main
- 
-   Link to the author's LinkedIn profile: https://www.linkedin.com/in/yeshwanth-rayankula-3b798a17a/
-
-
 # 2.  Project Background
 
   -  What is it about?
@@ -47,31 +31,22 @@
   Some specific questions related to this project:
   - How does the sentiment of a review correlate with the product rating given by the user? Is there a significant difference in sentiment between high-rated and low-rated reviews?
   - Can we identify common themes or topics within the text of the reviews that contribute to positive or negative sentiments? What are the top keywords associated with each sentiment?
-  - What role does the length of the review play in determining the sentiment expressed? Are longer reviews more likely to be positive or negative?
   - How do helpfulness metrics (HelpfulnessNumerator and HelpfulnessDenominator) influence the perceived sentiment of reviews? Do more helpful reviews show different sentiment trends compared to less           helpful ones?
-  - Which specific entities (products, brands, or features) receive the most favorable or unfavorable sentiments, and how do these sentiments impact customer purchasing behavior?
   - How effective are different machine learning models (traditional and deep learning) in accurately predicting review scores based on sentiment analysis?
 
 
 # 3. Data
-  Describe the datasets you are using to answer your research questions.
-
-  Data sources:
+  ##  Data sources:
   
-  The dataset is sourced from Amazon, and contains customer reviews for various products.
+  - The dataset is sourced from Amazon, and contains customer reviews for various products.
+  - Data size: 301 MB
+  - Data shape: 567,092 rows and 10 columns
+  - Time-period: The dataset does not specify a time range, but the reviews span multiple years based on product release dates.
   
-  Data size: 301 MB
+  ## What does each row represent?
+   - Each row represents an individual product review submitted by a customer.
   
-  Data shape: 567,092 rows and 10 columns
-  
-  Time-period: The dataset does not specify a time range, but the reviews span multiple years based on product release dates.
-  
-  What does each row represent?
-  
-  Each row represents an individual product review submitted by a customer.
-  
-  Data dictionary:
-  
+  ## Data dictionary:
    <img width="544" alt="image" src="https://github.com/user-attachments/assets/fde5f921-c650-41bf-b9a3-339403ccf67a">
   
   
@@ -90,19 +65,19 @@
 
 # 4 Data Cleaning
 
-   Missing Value Handling:
+   ## Missing Value Handling:
    - Identified missing values using .isnull().sum().
    - Dropped irrelevant columns ('Id', 'ProfileName') and rows with missing 'Summary'.
    
-   Duplicate Removal:
+   ## Duplicate Removal:
    - Identified duplicate rows based on specific columns like 'ProductId' and 'Text'.
    - Removed duplicates using .drop_duplicates() and rechecked for duplicates.
    
-   Balancing the Dataset:
+   ## Balancing the Dataset:
    - Used the minimum count of reviews across all rating categories to create a balanced dataset.
    - Grouped by 'Score' and sampled uniformly to ensure equal representation.
    
-   Data Cleaning and Transformation:
+   ## Data Cleaning and Transformation:
    - Removal of Tags, URLs, Punctuations, lowercasing of words, stopword removal etc,.
    - Ensured that words like no, not, nor, like, good, great etc,. are not removed which might affect the sentiment.
    - Removed specific words (e.g., "one") from text columns using string replacement.
@@ -111,31 +86,30 @@
 
 # 5 Data Exploration & Feature Extraction Steps
    
-   Basic Exploration:
-      
+   ## Basic Exploration:
    - Reviewed the dataset using .head(), .info(), and .describe().
    - Converted time data to a human-readable datetime format and verified the conversion.
    
-   Visualization of Score Distribution:
+   ## Visualization of Score Distribution:
    - Created a count plot and annotated it with percentages.
    - Explored balanced dataset distributions using bar plots and pie charts.
    
-   Top Products Analysis:
+   ## Top Products Analysis:
    - Identified the top 10 products by review count and visualized them with a bar plot.
    
-   Feature Engineering:
+   ## Feature Engineering:
    - Created a HelpfulnessRatio feature by dividing helpful votes by total votes.
    - Examined its distribution using histograms.
    
-   Outlier Detection:
+   ## Outlier Detection:
    - Analyzed review lengths by computing interquartile range (IQR).
    - Filtered out extreme values and re-plotted review lengths without outliers.
    
-   Temporal Analysis:
+   ## Temporal Analysis:
    - Plotted the number of reviews over time to observe trends.
    - Calculated and visualized the average review score per year.
    
-   Helpfulness Ratio vs. Score:
+   ## Helpfulness Ratio vs. Score:
    - Compared helpfulness ratios across different scores using box plots.
 
 ### Saved the cleaned Dataset for easy access and further modeling and analysis.
@@ -144,16 +118,16 @@
 
 ## Traditional ML Models:
 
-Logistic Regression:
+### Logistic Regression:
 - Performed logistic regression and the evaluation report is as follows:
 - <img width="441" alt="image" src="https://github.com/user-attachments/assets/7bea0831-5eee-401d-9eb5-e55b9fa2c4e5">
 
 
-SVM:
+### SVM:
 - Performed SVM and the evaluation report is as follows:
 - <img width="412" alt="image" src="https://github.com/user-attachments/assets/184acfe4-3e02-401c-9c52-8cdb487efe7c">
 
-Random Forest:
+### Random Forest:
 - Performed Random Forest and the evaluation report is as follows:
 - <img width="416" alt="image" src="https://github.com/user-attachments/assets/884e0a14-ecc8-4cf9-aeab-436e5fa2c226">
 
@@ -173,6 +147,62 @@ Random Forest:
 - Dataset: https://drive.google.com/file/d/1tqkp-LpDAgVDFlfdzgCJ5eYJjpkACr2W/view?usp=drive_link.
 
 # 7 Topic Modelling and Aspect Based Analysis.
+
+## Steps and Techniques
+### Data Preprocessing
+- Input Data: Reviews are preprocessed to remove stopwords, convert to lowercase, and tokenize.
+- Sampling: A subset of the dataset is used for computational efficiency.
+
+### Topic Modeling
+- Method: Latent Dirichlet Allocation (LDA).
+- Steps:
+   - Convert reviews into a document-term matrix using CountVectorizer.
+   - Extract latent topics with the top contributing words.
+- Visualize topics with bar charts.
+- Tools: scikit-learn, gensim.
+
+### Aspect-Based Sentiment Analysis
+- Tools:
+   - SpaCy for extracting aspects (noun phrases).
+   - VADER sentiment analysis for polarity scoring.
+- Steps:
+   - Extract aspects from reviews.
+   - Calculate sentiment scores for aspects.
+   - Aggregate and display top positive and negative aspects.
+
+### Visualization
+- Word Clouds:
+   - Positive and negative aspects are visualized using contrasting color maps.
+- Bar Charts:
+   - Top contributing words for each topic.
+   - Sentiment distribution across extracted aspects.
+   - Insights
+-  Topic Modeling:
+   - Key themes in customer reviews are uncovered, helping understand product quality, features, and user experience.
+- Sentiment Analysis:
+   - Aspects like "delivery", "packaging", and "price" show varying sentiment trends.
+   - Clear differentiation between positively and negatively perceived product attributes.
+- Word Clouds:
+   - Positive words (e.g., "excellent", "fast delivery").
+   - ![image](https://github.com/user-attachments/assets/c4842ba5-27db-421d-a14a-df7600e97946)
+
+   - Negative words (e.g., "poor quality", "late shipping").
+   - ![image](https://github.com/user-attachments/assets/6bfa0db9-d669-438a-a41d-f8563b0b64ba)
+
+ 
+## Some key visualizations are as follows:
+- ![image](https://github.com/user-attachments/assets/e66b052e-73b5-4b71-ac1b-15fcb7534d54)
+- <img width="466" alt="image" src="https://github.com/user-attachments/assets/6ef070db-307c-42e6-93ce-83d459537bea">
+- <img width="529" alt="image" src="https://github.com/user-attachments/assets/f5ff1b13-0a7b-497a-aa71-cb35278e084c">
+
+
+# 8 Streamlit Application Deployment:
+
+# 9 Conclusion:
+
+
+
+ 
 
 
 

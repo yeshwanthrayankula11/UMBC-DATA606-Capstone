@@ -9,7 +9,7 @@
    - LinkedIn Profile: [Connect with me on my linkedIn Profile](https://www.linkedin.com/in/yeshwanth-rayankula-3b798a17a/)
    - PowerPoint Presentation: [Download my PPT here](https://github.com/yeshwanthrayankula11/UMBC-DATA606-Capstone/blob/main/docs/Yeshwanth_Capstone_Final_Presentation.pptx)
    - Streamlit App: [Checkout my Sentiment Analysis App](https://umbc-data606-capstone-8zcuwcpdfrkqq8j5653hmw.streamlit.app/)
-   - YouTube Video: [Watch Like and Share my video here]()
+   - YouTube Video: [Watch Like and Share my video here](https://youtu.be/MKlZcshRxhs)
    
 # 2.  Project Background
 

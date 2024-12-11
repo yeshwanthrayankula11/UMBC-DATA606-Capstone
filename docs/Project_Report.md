@@ -197,8 +197,76 @@
 
 
 # 8 Streamlit Application Deployment:
+## Streamlit Application for Sentiment analysis of Amazon product reviews
 
-# 9 Conclusion:
+## Features
+- Sentiment prediction for individual reviews.
+- Dataset analysis with sentiment and confidence scores.
+- Interactive visualizations for insights.
+- Downloadable processed dataset with predictions.
+
+## Technologies Used
+* Python
+* Streamlit
+* Transformers (Hugging Face)
+* Matplotlib
+* Pandas
+
+
+## The app code considers of the following aspects:
+- **Dataset Summary**: The app has the dataset preview and the statistics for the dataset.
+- **Insights**: It shows few visualizations.
+- **Sentiment Prediction**: It gives you chance for two types of uploads:
+  - Single review input typing it manually. Output is the sentiment label with confidence.
+  - Upload a file sizing upto 200mb.
+  - It creates an output with an additional columns that gives labels predicting the sentiment(positive, negative, or neutral) and confidence of the prediction accuracy.
+  - There is an option to download these results for your dashboards, presentations or reports.
+
+# 9 Conclusion for the Report
+## Executive Summary
+This project demonstrates the implementation of sentiment analysis and entity extraction on Amazon product reviews to derive meaningful insights. By leveraging machine learning models, including Logistic Regression, SVM, Random Forest, and Distilled BERT, the study evaluated the sentiment trends and quality metrics from the textual data.
+
+## Key takeaways include:
+- Successful extraction of customer sentiment and frequently discussed topics.
+- Highlighting customer preferences and concerns for better product recommendations and feedback systems.
+- Deployment of a Streamlit app enabling interactive review and dataset analysis.
+
+## Challenges Encountered
+- Dataset and Model Size: Due to the large size of the dataset and BERT model, both were uploaded to Google Drive and dynamically downloaded during runtime to overcome GitHub’s size limitations.
+- Streamlit App Limitations: Adjustments to the app UI and backend logic were required to handle Streamlit’s limitations and ensure smooth functionality.
+- Model Performance: The BERT model exhibited slow response times for real-time predictions, necessitating a switch to Distilled BERT for faster and optimal performance.
+
+## Data Insights
+- Sentiment Trends: Positive reviews often corresponded to higher ratings, while negative sentiments were associated with low ratings.
+- Top Keywords: Word clouds revealed frequently used terms for positive and negative reviews, such as “excellent” and “poor quality.”
+- Temporal Analysis: Review trends over time indicated seasonal variations in sentiment and engagement.
+- Helpfulness Metrics: Reviews with higher helpfulness ratios tended to have clearer and more consistent sentiment trends.
+
+## Modeling Results
+- Logistic Regression: Accuracy of 72.9%, with an F1-score of 71.2%.
+- SVM: Accuracy of 72.7%, with an F1-score of 70.7%.
+- Random Forest: Accuracy of 65.6%, with an F1-score of 58.7%.
+- Distilled BERT: The best-performing model with 82% accuracy, a balanced F1-score of 82%, and robust predictions across all sentiment classes.
+
+## Deployment
+- The project was deployed as a Streamlit app featuring:
+- Single review sentiment prediction with confidence scores.
+- Dataset analysis with additional sentiment columns.
+- Interactive visualizations such as word clouds, top keywords, and score distributions.
+- Downloadable CSV files with processed results.
+
+## Future Work
+- Extend the analysis to include more product categories and detailed aspect-based insights.
+- Incorporate a recommendation system based on sentiment trends and topics.
+- Explore real-time updates to the dataset for a dynamic feedback loop.
+
+## References
+I have take a couple kaggle notebooks as my references for my project:
+- Talaat, H. (n.d.). Sentiment analysis modeling on Amazon reviews. Kaggle.[Click_Here](https://www.kaggle.com/code/haidytalaat/sentimentent-analysis-modeling-on-amazon-reviews)
+- Neelam, H. (n.d.). Sentiment analysis on Amazon reviews. Kaggle. [Click_Here](https://www.kaggle.com/code/harishneelam/sentiment-analysis-on-amazon-reviews)
+
+
+This report encapsulates a comprehensive approach to sentiment analysis, providing actionable insights and recommendations for businesses to enhance customer satisfaction and loyalty.
 
 
 
